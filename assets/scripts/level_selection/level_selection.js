@@ -36,6 +36,7 @@ cc.Class({
             this.levels[i].lid = i + 1;
             this.levels[i].controller = this;
             this.levels[i].getComponent("level_button").setEnabled(true);
+            this.levels[i].getChildByName("number").getComponent(cc.Label).string = i + 1;
         }
         
         // camera events
