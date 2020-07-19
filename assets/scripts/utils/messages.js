@@ -15,12 +15,12 @@ const Messenger = {
         if (this.data && this.data.hasOwnProperty(lang)) {
             this.mes = this.data[lang];
         } else {
-            console.log("cannot find language data: " + lang)   ;
+            console.log("cannot find language data: " + lang);
         }
     },
 
     get: function (key) {
-        if (!this.mes) { return ""; }
+        if (!this.mes || !this.mes.hasOwnProperty(key)) { return key; }
         return this.mes[key];
     }
 

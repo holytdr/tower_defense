@@ -19,21 +19,22 @@ cc.Class({
 
     onLoad: function () {
 		global.battle.ui = this;
-		this.now = 3;
+	},
+
+	countDown: function (sec) {
+		this.timer = sec;
+		this.countDown = true; 
 	},
 
 	update: function (dt) {
-		if (this.now >= dt) {
-			this.now -= dt;
-			if (this.now - Math.floor(this.now) < dt) {
-				// cc.log(this.now);
-				this.countDownLabel.string = Math.floor(this.now);
-				if (this.now < dt) {
-					this.countDownLabel.string = "Start!";
-					// cc.log("start");
-					global.event.trigger("level_start");
-					cc.tween(this.countDownLabel.node).to(3.0, {opacity: 0}).start();
-				}
+		if (this.countDown && this.timer > 0) {
+			this.timer -= dt;
+			this.countDownLabel.string = Math.floor(this.timer) + 1;
+			if (this.timer <= 0) {
+				this.countDownLabel.string = global.messages.get("START") + "!";
+				this.countDown = false;
+				global.event.trigger("level_start");
+				cc.tween(this.countDownLabel.node).to(3.0, {opacity: 0}).start();
 			}
 		}
 	},

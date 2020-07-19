@@ -431,11 +431,9 @@
       "__id__": 7
     },
     "_enabled": true,
-    "levelPrefabs": [
-      {
-        "__uuid__": "6a7f06d7-c36c-49e3-8302-6579ad961899"
-      }
-    ],
+    "ui": {
+      "__id__": 9
+    },
     "_id": "09CuTdzNxJwq6NYtUXgmP0"
   },
   {
@@ -460,7 +458,7 @@
       }
     ],
     "_prefab": null,
-    "_opacity": 255,
+    "_opacity": 0,
     "_color": {
       "__type__": "cc.Color",
       "r": 255,

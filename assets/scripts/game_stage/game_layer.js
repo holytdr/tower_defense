@@ -4,7 +4,10 @@ import global from '../utils/global'
 cc.Class({
     extends: cc.Component,
     properties: {
-
+		ui: {
+			default: null,
+			type: cc.Node,
+		},
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -17,24 +20,56 @@ cc.Class({
 			for (let asset of assets) {
 				this.configs[asset.name] = asset.json;
 			}
-			this.loadEnemies(this.configs['levels'][global.currLevel]);
-			this.loadTowers(this.configs['towers']);
-			this.startLevel(global.currLevel);
+			this.loadLevel(global.currLevel, this.configs['levels'][global.currLevel], this.configs['towers']);
 		});
 		global.battle.game = this;
 	},
 
-	startLevel: function (lvl) {
+	loadLevel: function (lvl, levelConf, towerConf) {
+		this.setNumResources(levelConf, towerConf);
+		this.loadEnemies(levelConf);
+		this.loadTowers(towerConf);
 		// instantiate level
 		cc.resources.load("levels/level_" + lvl, (err, prefab) => {
 			if (err) { cc.log(err); return; }
 			let level = cc.instantiate(prefab);
-			let levelData = this.configs["levels"][lvl];
-			let towerData = this.configs['towers'];
-			level.getComponent("level").configure(levelData, this.monsterRes, towerData);
-			level.parent = this.node;
 			this.currLevel = level;	
+			this.numLoad += 1;
 		});
+	},
+
+	getLoadProgress: function () {
+		if (!this.numLoad || !this.numRes) {
+			return 0.;
+		}
+		return this.numLoad/this.numRes;
+	},
+
+	setNumResources(levelConf, towerConf) {
+		// prefab
+		this.numRes = 1;
+		this.numLoad = 0;
+		// number of sprites to be load (2 = texture + action)
+		this.numRes += levelConf.waves.length*2;
+
+		// number of towers to be load
+		for (var tid of Object.keys(towerConf)) {
+			let tower = towerConf[tid];
+			this.numRes += tower.levels.length*2;
+			// bullet sprites
+			for (let level of tower.levels) {
+				this.numRes += level.hasOwnProperty("bullet_sprite") ? 1 : 0;
+			}
+		}
+	},
+
+	startLevel: function () {
+		let levelData = this.configs["levels"][global.currLevel];
+		let towerData = this.configs['towers'];
+		this.currLevel.getComponent("level").configure(levelData, this.monsterRes, towerData);
+		this.currLevel.parent = this.node;
+		this.ui.opacity = 255;
+		this.ui.getComponent("game_ui").countDown(3);
 	},
 
 	loadEnemies: function (level) {
@@ -59,6 +94,7 @@ cc.Class({
 					cc.resources.load('textures/' + level.bullet_sprite, cc.SpriteFrame, (err, frame) => {
 						if (err) { cc.log(err); return; }
 						level.bulletSprite = frame;
+						this.numLoad += 1;
 					});
 				}
 			}
@@ -68,6 +104,7 @@ cc.Class({
 	loadAnimation: function (container, path) {
 		// animation actions
 		cc.resources.load(path, cc.JsonAsset, (err, res) => {
+			this.numLoad += 1;
 			if (err) {
 				cc.log(err + ": " + path);
 			} else {
@@ -78,6 +115,7 @@ cc.Class({
 
 		// animation texture
 		cc.resources.load(path, cc.Texture2D, (err, tex) => {
+			this.numLoad += 1;
 			if (err) {
 				cc.log(err + ": " + path);
 			} else {
@@ -90,5 +128,13 @@ cc.Class({
 
     },
 
-    // update (dt) {},
+    update (dt) {
+		if (!this.started) {
+			cc.log(this.getLoadProgress());
+			if (this.getLoadProgress() >= 0.99) {
+				this.startLevel();
+				this.started = 1;
+			}
+		}
+	},
 });

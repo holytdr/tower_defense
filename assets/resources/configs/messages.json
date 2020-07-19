@@ -2,11 +2,13 @@
 	"zh-cn": {
 		"OK": "确认",
 		"CANCEL": "取消",
-		"LEVEL": "关卡"
+		"LEVEL": "关卡",
+		"START": "开始"
 	},
 	"en-us": {
 		"OK": "Ok",
 		"CANCEL": "Cancel",
-		"LEVEL": "Level"
+		"LEVEL": "Level",
+		"START": "Start"
 	}
 }
