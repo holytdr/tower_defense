@@ -21,13 +21,18 @@ cc.Class({
 		global.battle.ui = this;
 	},
 
-	countDown: function (sec) {
+	countDown: function (sec, delay = 0) {
+		this.delay = delay;
 		this.timer = sec;
 		this.countDown = true; 
 	},
 
 	update: function (dt) {
 		if (this.countDown && this.timer > 0) {
+			if (this.delay > 0) {
+				this.delay -= dt;
+				return;
+			}
 			this.timer -= dt;
 			this.countDownLabel.string = Math.floor(this.timer) + 1;
 			if (this.timer <= 0) {

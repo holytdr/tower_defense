@@ -75,9 +75,9 @@ cc.Class({
 		this.currLevel.getComponent("level").configure(levelData, this.monsterRes, towerData);
 		this.currLevel.opacity = 0;
 		this.currLevel.parent = this.node;
-		this.ui.opacity = 255;
-		this.ui.getComponent("game_ui").countDown(time + 0.5);
+		this.ui.getComponent("game_ui").countDown(time, 0.5);
 		cc.tween(this.currLevel).to(0.5, {opacity: 255}).start();
+		cc.tween(this.ui).to(0.5, {opacity: 255}).start();
 	},
 
 	loadEnemies: function (level) {
