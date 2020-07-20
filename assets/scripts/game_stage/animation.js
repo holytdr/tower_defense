@@ -8,7 +8,7 @@ cc.Class({
     },
 
     // LIFE-CYCLE CALLBACKS
-    initAnimation: function (data, scale = 1.0) {
+    initAnimation: function (anim, scale = 1.0, defaultPos = [0, 0]) {
         if (!this.sprites) {
             this.sprites = [];
             // 15 subframes
@@ -20,17 +20,18 @@ cc.Class({
         }
 		// animation frames
 		this.frames = [];
-		for (let rect of data.frameRects) {
+		for (let rect of anim.frameRects) {
 			let size = cc.size(rect[2], rect[3]);
 			let frame = new cc.SpriteFrame;
-			frame.setTexture(data.texture, cc.rect(...rect), false, cc.v2.zero, size);
+			frame.setTexture(anim.texture, cc.rect(...rect), false, cc.v2.zero, size);
 			this.frames.push(frame);
         }
         if (!this.direction) {
             this.direction = cc.v3(0, -1, 0);
         }
-        this.animations = data.animations;
+        this.animations = anim.animations;
         this.scale = scale;
+        this.defaultPos = cc.v2.fromArray(defaultPos);
 
         let size = this.frames[0].getOriginalSize();
         return cc.v2(size.width*this.scale, size.height*this.scale);
@@ -102,7 +103,7 @@ cc.Class({
             this.sprites[i].spriteFrame = this.frames[image_n[i]];
             this.sprites[i].spriteFrame.setFlipX(mirror ^ direction[i]);
             this.sprites[i].node.scale = cc.v2(this.scale * scale_x[i], this.scale * scale_y[i]);
-            this.sprites[i].node.position = cc.v2(offset_x[i], offset_y[i]);
+            this.sprites[i].node.position = this.defaultPos.add(cc.v2(offset_x[i], offset_y[i]));
             this.sprites[i].node.angle = rotation[i] * (mirror ? -1 : 1);
             this.sprites[i].node.opacity = opacity[i];
         }

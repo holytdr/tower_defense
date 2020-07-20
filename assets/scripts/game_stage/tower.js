@@ -7,6 +7,7 @@ const { UnitState } = require("../utils/states");
 // default properties
 const default_prop = {
 	scale: 1.0,
+	anim_pos: [0.0, 0.0],
 	range: 300,
 	view: 400,
 	aspd: 1.0,
@@ -97,7 +98,7 @@ cc.Class({
 		this.prop = update_dict(this.prop, ldata);
 
 		this.findDirection(cc.v3(-5000, -5000, 0));
-		this.spriteSize = this.initAnimation(ldata, this.prop.scale);
+		this.spriteSize = this.initAnimation(ldata, this.prop.scale, this.prop.anim_pos);
 		this.playAnime(UnitState.Idle, -1);
 
 		this.bulletScale = 1.0;

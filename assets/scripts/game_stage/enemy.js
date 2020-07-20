@@ -7,6 +7,7 @@ const { UnitState } = require("../utils/states");
 // default properties
 const default_prop = {
 	scale: 1.0,
+	anim_pos: [0, 0],
 	speed: 100,
 	hp: 100,
 	defense: 0,
@@ -58,7 +59,7 @@ cc.Class({
 		this.findDirection(pathPoints[1].position);
 
 		// initialize animation
-		let size = this.initAnimation(sprites, this.prop.scale);
+		let size = this.initAnimation(sprites, this.prop.scale, this.prop.anim_pos);
 
 		// configure health bar
 		let hbarNode = cc.instantiate(this.healthBarPrefab);
