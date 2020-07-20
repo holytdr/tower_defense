@@ -4,13 +4,15 @@
 		"CANCEL": "取消",
 		"LEVEL": "关卡",
 		"START": "开始",
-		"LOADING": "加载中"
+		"LOADING": "加载中",
+		"WELCOME": "点击开始游戏"
 	},
 	"en-us": {
 		"OK": "Ok",
 		"CANCEL": "Cancel",
 		"LEVEL": "Level",
 		"START": "Start",
-		"LOADING": "Loading"
+		"LOADING": "Loading",
+		"WELCOME": "TAP TO START"
 	}
 }

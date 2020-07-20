@@ -1,13 +1,18 @@
 const Messenger = {
     lang: "zh-cn",
 
-    load: function (url) {
+    load: function (url, callBack = function () {}) {
         // do not repeatedly load the same resource
         if (this.url && this.url == url) { return; }
         cc.resources.load(url, cc.JsonAsset, (err, asset) => {
-            this.data = asset.json;
-            this.setLanguage(this.lang);
-            this.url = url;
+            if (err) {
+                cc.log(err);
+            } else {
+                this.data = asset.json;
+                this.setLanguage(this.lang);
+                this.url = url;
+            }
+            callBack(err, this.data);
         })
     },
 
