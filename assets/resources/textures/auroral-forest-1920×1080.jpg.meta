@@ -1,0 +1,36 @@
+{
+  "ver": "2.3.5",
+  "uuid": "64f36aac-1cb5-44c1-9317-21298f44f921",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 1920,
+  "height": 1080,
+  "platformSettings": {},
+  "subMetas": {
+    "auroral-forest-1920×1080": {
+      "ver": "1.0.4",
+      "uuid": "0e42e473-11d0-4879-b37d-5f2966ba56e3",
+      "rawTextureUuid": "64f36aac-1cb5-44c1-9317-21298f44f921",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 1920,
+      "height": 1080,
+      "rawWidth": 1920,
+      "rawHeight": 1080,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

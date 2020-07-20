@@ -8,11 +8,17 @@ cc.Class({
 			default: null,
 			type: cc.Node,
 		},
+		loading: {
+			default: null,
+			type: cc.Node,
+		}
     },
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad: function () {
+		this.started = false;
+		this.loading.active = true;
 		// load configurations
 		cc.resources.loadDir("configs", cc.JsonAsset, (err, assets) => {
 			if (err) { cc.log(err); return; }
@@ -63,13 +69,15 @@ cc.Class({
 		}
 	},
 
-	startLevel: function () {
+	startLevel: function (time) {
 		let levelData = this.configs["levels"][global.currLevel];
 		let towerData = this.configs['towers'];
 		this.currLevel.getComponent("level").configure(levelData, this.monsterRes, towerData);
+		this.currLevel.opacity = 0;
 		this.currLevel.parent = this.node;
 		this.ui.opacity = 255;
-		this.ui.getComponent("game_ui").countDown(3);
+		this.ui.getComponent("game_ui").countDown(time + 0.5);
+		cc.tween(this.currLevel).to(0.5, {opacity: 255}).start();
 	},
 
 	loadEnemies: function (level) {
@@ -130,10 +138,13 @@ cc.Class({
 
     update (dt) {
 		if (!this.started) {
-			cc.log(this.getLoadProgress());
-			if (this.getLoadProgress() >= 0.99) {
-				this.startLevel();
-				this.started = 1;
+			let progress = this.getLoadProgress();
+			if (this.loading.getComponent("loading").setProgress(progress)) {
+				this.started = true;
+				cc.tween(this.loading).to(1.0, {opacity: 0, active: false}).start();
+				this.scheduleOnce(() => {
+					this.startLevel(5);
+				}, 0.5);
 			}
 		}
 	},

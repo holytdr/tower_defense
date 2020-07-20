@@ -3,12 +3,14 @@
 		"OK": "确认",
 		"CANCEL": "取消",
 		"LEVEL": "关卡",
-		"START": "开始"
+		"START": "开始",
+		"LOADING": "加载中"
 	},
 	"en-us": {
 		"OK": "Ok",
 		"CANCEL": "Cancel",
 		"LEVEL": "Level",
-		"START": "Start"
+		"START": "Start",
+		"LOADING": "Loading"
 	}
 }
