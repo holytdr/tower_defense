@@ -55,9 +55,6 @@ cc.Class({
         this.node.on(cc.Node.EventType.TOUCH_END, (event)=>{
             this.onTouch = false;
         });
-
-        // TODO put it on the start
-        global.messages.load("configs/messages");
     },
 
     selectLevel: function (level) {

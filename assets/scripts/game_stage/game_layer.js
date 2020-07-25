@@ -94,6 +94,8 @@ cc.Class({
 			if (!this.monsterRes.hasOwnProperty(sprite)) {
 				this.monsterRes[sprite] = {};
 				this.loadAnimation(this.monsterRes[sprite], "sprites/" + sprite);
+			} else {
+				this.numLoad += 2;
 			}
 		}
 	},

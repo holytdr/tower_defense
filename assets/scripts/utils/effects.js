@@ -40,14 +40,15 @@ const EffectsController = function (obj) {
         return this.numLoad >= this.numRes;
     };
 
-    obj.apply = function (render, eff, duration = -1) {
+    // apply the effect to unit
+    obj.apply = function (unit, eff, duration = -1) {
         switch (eff) {
         case "attacked":
             if (duration < 0) {
                 duration = this.data["attacked"].duration;
             }
-            render.setMaterial(0, this.materials["attacked"]);
-            render.scheduleOnce(() => { render.setMaterial(0, this.materials["sprite"]); }, duration);
+            unit.setMaterial(0, this.materials["attacked"]);
+            unit.scheduleOnce(() => { unit.setMaterial(0, this.materials["sprite"]); }, duration);
         default:
             break;
         }

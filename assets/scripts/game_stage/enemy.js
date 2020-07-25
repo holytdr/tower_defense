@@ -31,6 +31,10 @@ cc.Class({
 			default: null,
 			type: cc.Prefab,
 		},
+		dtmod: {
+			default: 1.0,
+			type: cc.Float,
+		}
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -93,12 +97,13 @@ cc.Class({
 	},
 
 	update: function (dt) {
-		this.animeUpdate(dt);
+		let dt2 = dt*this.dtmod;
+		this.animeUpdate(dt2);
 		// move
 		if (this.state == UnitState.Move) {
 			let dest = this.pathPoints[this.currPt + 1].position;
 			let dist = dest.sub(this.node.position).mag();
-			let moved = dt*this.prop.speed;
+			let moved = dt2*this.prop.speed;
 			
 			// cannot reach the next point yet
 			if (dist > moved) {
@@ -140,10 +145,28 @@ cc.Class({
 			let recover = hitRecover/Math.max(0.05, this.prop.vitality);
 			// attacked effect
 			if (recover > 0.01) {
-				this.prop.speed = 0;
-				cc.tween(this.prop).to(recover, {speed: this.prop.originalSpeed}, { easing: t => t*t }).start();
+				this.slowDown(0, recover);
 				this.playAnimeOnce(UnitState.Damage, recover);
 			}
+		}
+	},
+
+	slowDown: function (fac, duration = -1) {
+		this.prop.speed = fac*this.prop.originalSpeed;
+		if (duration > 0) {
+			cc.tween(this.prop).to(duration, {speed: this.prop.originalSpeed}, { easing: t => t*t }).start();
+		}
+	},
+
+	timeRecover: function () {
+		this.dtmod = 1.0;
+	},
+
+	timeDilution: function (fac, duration = -1) {
+		this.dtmod = fac;
+		if (duration > 0) {
+			this.unschedule(this.timeRecover);
+			this.scheduleOnce(this.timeRecover, duration);
 		}
 	},
 
