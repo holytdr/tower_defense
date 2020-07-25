@@ -36,7 +36,7 @@ cc.Class({
 		this.loadEnemies(levelConf);
 		this.loadTowers(towerConf);
 		// instantiate level
-		cc.resources.load("levels/level_" + lvl, (err, prefab) => {
+		cc.resources.load("levels/level_" + lvl, cc.Prefab, (err, prefab) => {
 			if (err) { cc.log(err); return; }
 			let level = cc.instantiate(prefab);
 			this.currLevel = level;	
@@ -141,7 +141,10 @@ cc.Class({
 			let progress = this.getLoadProgress();
 			if (this.loading.getComponent("loading").setProgress(progress)) {
 				this.started = true;
-				cc.tween(this.loading).to(1.0, {opacity: 0, active: false}).start();
+				cc.tween(this.loading)
+					.to(1.0, {opacity: 0}, { easing: t => t*t })
+					.call(() => { this.loading.active = false; })
+					.start();
 				this.scheduleOnce(() => {
 					this.startLevel(5);
 				}, 0.5);

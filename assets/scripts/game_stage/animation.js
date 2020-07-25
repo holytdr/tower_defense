@@ -31,7 +31,7 @@ cc.Class({
         }
         this.animations = anim.animations;
         this.scale = scale;
-        this.defaultPos = cc.v2.fromArray(defaultPos);
+        this.defaultPos = cc.v2(...defaultPos);
 
         let size = this.frames[0].getOriginalSize();
         return cc.v2(size.width*this.scale, size.height*this.scale);
@@ -149,6 +149,12 @@ cc.Class({
 
     getCenterPos: function() {
         return this.node.position.add(this.sprites[0].node.position);
+    },
+
+    setMaterial: function (index, mat) {
+        for (let sprite of this.sprites) {
+            sprite.setMaterial(index, mat);
+        }
     },
     // onLoad () {},
 

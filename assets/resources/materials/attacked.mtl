@@ -1,0 +1,17 @@
+{
+  "__type__": "cc.Material",
+  "_name": "attacked",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "324ce6f1-ef27-447c-a09a-953fabd4c646"
+  },
+  "_techniqueIndex": 0,
+  "_techniqueData": {
+    "0": {
+      "defines": {
+        "USE_TEXTURE": true
+      }
+    }
+  }
+}

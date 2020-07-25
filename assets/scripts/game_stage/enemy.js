@@ -131,6 +131,7 @@ cc.Class({
 		this.updateHbarPos();
 		this.hbar.progress = Math.max(this.prop.hp, 0)/this.prop.maxHp;
 		let recover = hitRecover/Math.max(0.05, this.prop.vitality);
+
 		if (recover > 0.01) {
 			this.prop.speed = 0;
 			cc.tween(this.prop).to(recover, {speed: this.prop.originalSpeed}, { easing: t => t*t }).start();
