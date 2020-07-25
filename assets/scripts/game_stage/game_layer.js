@@ -1,6 +1,6 @@
 // game layer script
 import global from '../utils/global'
-import EffectsController from '../utils/effects'
+
 
 cc.Class({
     extends: cc.Component,
@@ -38,8 +38,7 @@ cc.Class({
 		this.loadTowers(towerConf);
 
 		// effects
-		this.effects = EffectsController({});
-		this.effects.init();
+		global.effects.init();
 
 		// instantiate level
 		cc.resources.load("levels/level_" + lvl, cc.Prefab, (err, prefab) => {
@@ -146,7 +145,7 @@ cc.Class({
     update (dt) {
 		if (!this.started) {
 			let progress = this.getLoadProgress();
-			if (this.loading.getComponent("loading").setProgress(progress) && this.effects.ready()) {
+			if (this.loading.getComponent("loading").setProgress(progress) && global.effects.ready()) {
 				this.started = true;
 				cc.tween(this.loading)
 					.to(1.0, {opacity: 0}, { easing: t => t*t })

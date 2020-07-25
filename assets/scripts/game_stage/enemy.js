@@ -126,19 +126,24 @@ cc.Class({
 		if ((damage <= 0) || (this.state == UnitState.Goal) || (this.state == UnitState.Dead)) {
 			return;
 		}
+
 		this.prop.hp -= damage;
 		this.hbar.node.active = true;
 		this.updateHbarPos();
 		this.hbar.progress = Math.max(this.prop.hp, 0)/this.prop.maxHp;
-		let recover = hitRecover/Math.max(0.05, this.prop.vitality);
 
-		if (recover > 0.01) {
-			this.prop.speed = 0;
-			cc.tween(this.prop).to(recover, {speed: this.prop.originalSpeed}, { easing: t => t*t }).start();
-			this.playAnimeOnce(UnitState.Damage, recover);
-		}
 		if (this.prop.hp <= 0) {
 			this.setState(UnitState.Dead);
+		} else {
+			global.effects.apply(this, "attacked");
+			// hit recovery
+			let recover = hitRecover/Math.max(0.05, this.prop.vitality);
+			// attacked effect
+			if (recover > 0.01) {
+				this.prop.speed = 0;
+				cc.tween(this.prop).to(recover, {speed: this.prop.originalSpeed}, { easing: t => t*t }).start();
+				this.playAnimeOnce(UnitState.Damage, recover);
+			}
 		}
 	},
 

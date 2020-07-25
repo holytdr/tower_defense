@@ -3,14 +3,22 @@
 const EffectsController = function (obj) {
 
     obj.data = null;
-    obj.materials = {};
     obj.numRes = 1;
     obj.numLoad = 0;
+    
+    obj.init = function (url = "configs/effects", force = false) {
+        if ((this.url == url) && !force) { return; }
 
-    obj.init = function (url = "configs/effects") {
+        this.materials = {
+            sprite: cc.Material.createWithBuiltin(cc.Material.BUILTIN_NAME.SPRITE),
+            gray: cc.Material.createWithBuiltin(cc.Material.BUILTIN_NAME.GRAY_SPRITE),
+            unlit: cc.Material.createWithBuiltin(cc.Material.BUILTIN_NAME.UNLIT),
+        }
+
         cc.resources.load(url, cc.JsonAsset, (err, asset) => {
             if (err) { cc.log(err); return; }
             this.data = asset.json;
+            this.url = url;
             this.numRes = 1 +  Object.keys(this.data).length;
             this.numLoad = 1;
             this.loadResources();
@@ -31,6 +39,20 @@ const EffectsController = function (obj) {
     obj.ready = function () {
         return this.numLoad >= this.numRes;
     };
+
+    obj.apply = function (render, eff, duration = -1) {
+        switch (eff) {
+        case "attacked":
+            if (duration < 0) {
+                duration = this.data["attacked"].duration;
+            }
+            render.setMaterial(0, this.materials["attacked"]);
+            render.scheduleOnce(() => { render.setMaterial(0, this.materials["sprite"]); }, duration);
+        default:
+            break;
+        }
+
+    }
 
     return obj;
 }
