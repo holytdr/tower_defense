@@ -13,7 +13,7 @@ CCEffect %{
       properties:
         texture: { value: white }
         alphaThreshold: { value: 0.5 }
-        highlight: { value: [0.7, 0.7, 0.7, 0.7] }
+        brightScale: { value: 1.2 }
 }%
 
 
@@ -66,7 +66,7 @@ CCProgram fs %{
   #endif
 
   uniform LAMYOUM_COM{
-    vec4 highlight;
+    float brightScale;
   };
 
   void main () {
@@ -80,8 +80,17 @@ CCProgram fs %{
 
     ALPHA_TEST(o);
 
-    o.rgb = o.rgb + highlight.rgb;
+    float b = abs(o.b - o.r - o.g)*brightScale;
+    float g = abs(o.g - o.b - o.r)*brightScale;
+    float r = abs(o.r - o.g - o.b)*brightScale;
 
-    gl_FragColor = o;
+    // sort r,g,b as b >= g >= r
+    if ((b >= r) && (b >= g)) {
+      gl_FragColor = vec4(min(g, r), max(g, r), b, o.a);
+    } else if ((g >= b) && (g >= r)) {
+      gl_FragColor = vec4(min(r, b), max(r, b), g, o.a);
+    } else {
+      gl_FragColor = vec4(min(g, b), max(g, b), r, o.a);
+    }
   }
 }%

@@ -19,6 +19,8 @@ cc.Class({
 
     onLoad: function () {
 		// place holder
+		// this affects the schedulers
+		// cc.director.getScheduler().setTimeScale(1.0);
 	},
 
     start () {

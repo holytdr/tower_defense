@@ -13,7 +13,6 @@ CCEffect %{
       properties:
         texture: { value: white }
         alphaThreshold: { value: 0.5 }
-        highlight: { value: [0.7, 0.7, 0.7, 0.7] }
 }%
 
 
@@ -65,10 +64,6 @@ CCProgram fs %{
   uniform sampler2D texture;
   #endif
 
-  uniform LAMYOUM_COM{
-    vec4 highlight;
-  };
-
   void main () {
     vec4 o = vec4(1, 1, 1, 1);
 
@@ -80,8 +75,9 @@ CCProgram fs %{
 
     ALPHA_TEST(o);
 
-    o.rgb = o.rgb + highlight.rgb;
-
-    gl_FragColor = o;
+    gl_FragColor.r = o.r*o.r;
+    gl_FragColor.g = o.g*o.g;
+    gl_FragColor.b = o.b*o.b;
+    gl_FragColor.a = o.a;
   }
 }%
